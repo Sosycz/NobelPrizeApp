@@ -1,7 +1,9 @@
 package prizecomponents;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Laureate {
     private long id;
@@ -9,6 +11,7 @@ public class Laureate {
     private String location;//locationString
     private String dateOfBirth; //birth
     private String dateOfDeath; //death
+    private List<Prize> prizeList = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -48,5 +51,22 @@ public class Laureate {
 
     public void setDateOfDeath(String dateOfDeath) {
         this.dateOfDeath = dateOfDeath;
+    }
+
+    public List<Prize> getPrizeList() {
+        return prizeList;
+    }
+
+    @Override
+    public String toString() {
+        return "Laureate{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", location='" + location + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", dateOfDeath='" + dateOfDeath + '\'' +
+                ", prizeList=" + prizeList +
+                '}';
+
     }
 }

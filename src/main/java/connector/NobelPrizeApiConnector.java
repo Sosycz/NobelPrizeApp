@@ -2,6 +2,7 @@ package connector;
 
 import org.json.JSONObject;
 import prizecomponents.Laureate;
+import prizecomponents.Prize;
 
 import java.io.IOException;
 import java.net.URI;
@@ -14,51 +15,76 @@ import java.util.Currency;
 import java.util.List;
 
 public class NobelPrizeApiConnector {
-    private static final String URL = "api.nobelprize.org/2.0/";
+    private static final String URL = "http://api.nobelprize.org/2.0/";
 
-public List<Laureate> getLaureate(String name) {
-    List<Laureate> laureates = new ArrayList<>();
-    try {
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(new URI(URL + "laureates?name=wilhelm"))
-                .GET()
-                .build();
-
-
-        HttpResponse<String> httpResponse = HttpClient.newHttpClient()
-                .send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-        JSONObject jsonObject = new JSONObject(httpResponse.body());
-        jsonObject.getJSONArray("laureates").forEach(s -> {
-
-            Laureate laureate = new Laureate();
-
-            laureate.setFullName(jsonObject.getJSONObject("fullName").
-                    getString("en"));
-
-            laureate.setId(jsonObject.getInt("id"));
-
-            laureate.setDateOfBirth(jsonObject.getJSONObject("birth").
-                    getString("date"));
-
-            laureate.setLocation(jsonObject.getJSONObject("birth").
-                    getJSONObject("place").getJSONObject("locationString").
-                    getString("en"));
-
-            laureate.setDateOfDeath(jsonObject.getJSONObject("death").
-                    getString("date"));
+    public List<Laureate> getLaureate(String name) {
+        List<Laureate> laureates = new ArrayList<>();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(new URI(URL + "laureates?name=" + name))
+                    .GET()
+                    .build();
 
 
+            HttpResponse<String> httpResponse = HttpClient.newHttpClient()
+                    .send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-            laureates.add(laureate);
-        });
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            jsonObject.getJSONArray("laureates").forEach(s -> {
 
-        System.out.println(laureates);
+                Laureate laureate = new Laureate();
 
-    } catch (URISyntaxException | InterruptedException | IOException e) {
-        e.printStackTrace();
+                laureate.setFullName(((JSONObject) s).getJSONObject("fullName").
+                        getString("en"));
+
+                laureate.setId(Integer.parseInt(((JSONObject) s).
+                        getString("id")));
+
+                laureate.setDateOfBirth(((JSONObject) s).
+                        getJSONObject("birth").
+                        getString("date"));
+
+                laureate.setLocation(((JSONObject) s).
+                        getJSONObject("birth").
+                        getJSONObject("place").
+                        getJSONObject("locationString").
+                        getString("en"));
+
+                laureate.setDateOfDeath(((JSONObject) s).getJSONObject("death").
+                        getString("date"));
+
+                 ((JSONObject) s).getJSONArray("nobelPrizes").forEach(p -> {
+                    Prize prize = new Prize();
+
+                    prize.setCategory(((JSONObject) p).getJSONObject("category").
+                            getString("en"));
+
+                    prize.setDateAwarded(((JSONObject) p).getString("awardYear"));
+
+                    prize.setPrizeMotivation(((JSONObject) p).getJSONObject("motivation").getString("en"));
+
+                    prize.setPrizeAmountObtained(((JSONObject) p).getBigDecimal("prizeAmount"));
+
+                    prize.setPrizeAmountAdjusted(((JSONObject) p).getBigDecimal("prizeAmountAdjusted"));
+                    laureate.getPrizeList().add(prize);
+
+                });
+
+
+                laureates.add(laureate);
+            });
+
+            System.out.println(laureates);
+
+        } catch (URISyntaxException | InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+
+        return laureates;
     }
 
-    return laureate;
-}
+//    public List<Laureate> getLaureatesFromYear(int year) {
+//
+//    }
+
 }
