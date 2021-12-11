@@ -10,8 +10,6 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +40,7 @@ public class NobelPrizeApiConnector {
                 laureate.setId(Integer.parseInt(((JSONObject) s).
                         getString("id")));
 
+
                 laureate.setDateOfBirth(((JSONObject) s).
                         getJSONObject("birth").
                         getString("date"));
@@ -51,9 +50,11 @@ public class NobelPrizeApiConnector {
                         getJSONObject("place").
                         getJSONObject("locationString").
                         getString("en"));
-
-                laureate.setDateOfDeath(((JSONObject) s).getJSONObject("death").
-                        getString("date"));
+                while(((JSONObject) s).has("death")) {
+                    laureate.setDateOfDeath(((JSONObject) s).getJSONObject("death").
+                            getString("date"));
+                    break;
+                }
 
                  ((JSONObject) s).getJSONArray("nobelPrizes").forEach(p -> {
                     Prize prize = new Prize();
