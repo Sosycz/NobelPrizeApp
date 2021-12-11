@@ -10,14 +10,16 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 
 public class NobelPrizeApiConnector {
     private static final String URL = "http://api.nobelprize.org/2.0/";
 
     public List<Laureate> getLaureate(String name) {
+        name = name.replaceAll(" ", "%20");
         List<Laureate> laureates = new ArrayList<>();
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -83,8 +85,34 @@ public class NobelPrizeApiConnector {
         return laureates;
     }
 
-//    public List<Laureate> getLaureatesFromYear(int year) {
-//
-//    }
+    public List<Laureate> getLaureatesFromYear(int year) {
+
+        List<Laureate> laureates = new ArrayList<>();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(new URI(URL + "laureates?nobelPrizeYear=" + year))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> httpResponse = HttpClient.newHttpClient()
+                    .send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            NobelPrizeApiConnector nobelPrizeApiConnector = new NobelPrizeApiConnector();
+
+            jsonObject.getJSONArray("laureates").forEach(l -> {
+                String name = ((JSONObject) l).getJSONObject("fullName").getString("en");
+
+                laureates.addAll(nobelPrizeApiConnector.getLaureate(name));
+            });
+
+
+        } catch (URISyntaxException | IOException |InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    return laureates;
+    }
 
 }

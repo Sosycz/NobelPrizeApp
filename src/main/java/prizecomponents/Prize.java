@@ -48,4 +48,15 @@ public class Prize {
     public void setPrizeAmountAdjusted(BigDecimal prizeAmountAdjusted) {
         this.prizeAmountAdjusted = prizeAmountAdjusted;
     }
+
+    @Override
+    public String toString() {
+        return "Prize{" +
+                "dateAwarded='" + dateAwarded + '\'' +
+                ", category='" + category + '\'' +
+                ", prizeMotivation='" + prizeMotivation + '\'' +
+                ", prizeAmountObtained=" + prizeAmountObtained +
+                ", prizeAmountAdjusted=" + prizeAmountAdjusted +
+                '}';
+    }
 }
