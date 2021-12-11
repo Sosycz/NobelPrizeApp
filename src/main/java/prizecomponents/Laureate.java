@@ -9,5 +9,44 @@ public class Laureate {
     private String location;//locationString
     private String dateOfBirth; //birth
     private String dateOfDeath; //death
-    private String dateAw
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getDateOfDeath() {
+        return dateOfDeath;
+    }
+
+    public void setDateOfDeath(String dateOfDeath) {
+        this.dateOfDeath = dateOfDeath;
+    }
 }
