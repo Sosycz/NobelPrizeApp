@@ -8,7 +8,7 @@
         Plik persistance.xml konfiguruje conajmniej jedną jednostkę utrwalania
         Każda jednostka utrwalania musi mieć unikalną nazwę
     -->
-    <persistence-unit name="productPU">
+    <persistence-unit name="noblists">
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
@@ -18,13 +18,13 @@
                     value="com.mysql.cj.jdbc.Driver"/>
             <property
                     name="javax.persistence.jdbc.url"
-                    value="jdbc:mysql://localhost:3306/currency"/>
+                    value="jdbc:mysql://127.0.0.1:3306/noblists"/>
             <property
                     name="javax.persistence.jdbc.user"
-                    value="currency"/>
+                    value="root"/>
             <property
                     name="javax.persistence.jdbc.password"
-                    value="Curr3ncy123"/>
+                    value="Programuje21"/>
             <!--
                 dialekt wynika z wersji i konkretnego dostawcy bazy danych
                 to jaki dialekt ustawić wynika z dokumentacji konkretnej bazy danych
@@ -35,7 +35,7 @@
 
             <property
                     name="hibernate.hbm2ddl.auto"
-                    value="create-drop"/>
+                    value="update"/>
 
             <property
                     name="hibernate.show_sql"

@@ -1,11 +1,10 @@
 package connector;
 
-import jdk.jfr.Category;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import prizecomponents.Laureate;
-import prizecomponents.Prize;
-import prizecomponents.PrizeCategory;
+import model.Laureate;
+import model.Prize;
+import model.PrizeCategory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,12 +14,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class NobelPrizeApiConnector {
+public class NobelPrizeApiConnector implements ApiConnector {
+
     private static final String URL = "http://api.nobelprize.org/2.0/";
 
-    public List<Laureate> getLaureate(String name) {
+    public List<Laureate> getLaureatesByName(String name) {
         name = name.replaceAll(" ", "%20");
         List<Laureate> laureates = new ArrayList<>();
         try {
@@ -93,7 +92,7 @@ public class NobelPrizeApiConnector {
         return laureates;
     }
 
-    public List<Laureate> getLaureatesFromYear(int year) {
+    public List<Laureate> getLaureatesByYear(int year) {
 
         List<Laureate> laureates = new ArrayList<>();
         try {
@@ -113,7 +112,7 @@ public class NobelPrizeApiConnector {
                         .getJSONObject("fullName")
                         .getString("en");
 
-                laureates.addAll(nobelPrizeApiConnector.getLaureate(name));
+                laureates.addAll(nobelPrizeApiConnector.getLaureatesByName(name));
             });
 
 
@@ -124,7 +123,7 @@ public class NobelPrizeApiConnector {
 
     return laureates;
     }
-    public List<Laureate> getLaureatesFromYear(int year, PrizeCategory category) {
+    public List<Laureate> getLaureatesByYearAndCategory(int year, PrizeCategory category) {
 
         List<Laureate> laureates = new ArrayList<>();
         try {
@@ -138,7 +137,6 @@ public class NobelPrizeApiConnector {
 
             JSONArray jsonArray = new JSONArray(httpResponse.body());
             NobelPrizeApiConnector nobelPrizeApiConnector = new NobelPrizeApiConnector();
-            int i = 0;
             jsonArray.forEach(l -> {
                 ((JSONObject) l).getJSONArray("laureates").forEach(laureate-> {
 
@@ -146,7 +144,7 @@ public class NobelPrizeApiConnector {
                             .getJSONObject("knownName")
                             .getString("en");
 
-                    laureates.addAll(nobelPrizeApiConnector.getLaureate(name));
+                    laureates.addAll(nobelPrizeApiConnector.getLaureatesByName(name));
                 });
             });
 

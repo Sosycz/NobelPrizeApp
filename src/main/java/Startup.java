@@ -1,7 +1,7 @@
 import connector.NobelPrizeApiConnector;
-import prizecomponents.PrizeCategory;
+import model.PrizeCategory;
 
-public class App {
+public class Startup {
     public static void main(String[] args) {
         NobelPrizeApiConnector nobelPrizeApiConnector = new NobelPrizeApiConnector();
 //        nobelPrizeApiConnector.getLaureate("Alan Heeger");

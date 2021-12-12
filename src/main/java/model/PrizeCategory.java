@@ -1,4 +1,4 @@
-package prizecomponents;
+package model;
 
 public enum PrizeCategory {
     CHE,

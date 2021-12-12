@@ -1,12 +1,20 @@
-package prizecomponents;
+package entity;
 
-import java.text.DateFormat;
+import model.Prize;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class Laureate {
+@Entity
+@Table(name = "laureates")
+public class LaureateEntity {
+
+    @Id
     private long id;
+
     private String fullName; //fullName
     private String location;//locationString
     private String dateOfBirth; //birth
@@ -57,16 +65,4 @@ public class Laureate {
         return prizeList;
     }
 
-    @Override
-    public String toString() {
-        return "Laureate{" +
-                "id=" + id +
-                ", fullName='" + fullName + '\'' +
-                ", location='" + location + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
-                ", dateOfDeath='" + dateOfDeath + '\'' +
-                ", prizeList=" + prizeList +
-                '}';
-
-    }
 }

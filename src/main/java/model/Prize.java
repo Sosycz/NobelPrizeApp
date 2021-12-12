@@ -1,4 +1,4 @@
-package prizecomponents;
+package model;
 
 import java.math.BigDecimal;
 
