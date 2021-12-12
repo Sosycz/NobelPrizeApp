@@ -1,8 +1,11 @@
 package connector;
 
+import jdk.jfr.Category;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import prizecomponents.Laureate;
 import prizecomponents.Prize;
+import prizecomponents.PrizeCategory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,6 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class NobelPrizeApiConnector {
     private static final String URL = "http://api.nobelprize.org/2.0/";
@@ -50,10 +54,9 @@ public class NobelPrizeApiConnector {
                         getJSONObject("place").
                         getJSONObject("locationString").
                         getString("en"));
-                while(((JSONObject) s).has("death")) {
+                if(((JSONObject) s).has("death")) {
                     laureate.setDateOfDeath(((JSONObject) s).getJSONObject("death").
                             getString("date"));
-                    break;
                 }
 
                  ((JSONObject) s).getJSONArray("nobelPrizes").forEach(p -> {
@@ -114,6 +117,37 @@ public class NobelPrizeApiConnector {
 
 
     return laureates;
+    }
+    public List<Laureate> getLaureatesFromYear(int year, PrizeCategory category) {
+
+        List<Laureate> laureates = new ArrayList<>();
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(new URI(URL + "nobelPrize/" + category.toString().toLowerCase() + "/" + year))
+                    .GET()
+                    .build();
+            HttpResponse<String> httpResponse = HttpClient.newHttpClient()
+                    .send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            JSONArray jsonArray = new JSONArray(httpResponse.body());
+            NobelPrizeApiConnector nobelPrizeApiConnector = new NobelPrizeApiConnector();
+            int i = 0;
+            jsonArray.forEach(l -> {
+                ((JSONObject) l).getJSONArray("laureates").forEach(laureate-> {
+
+                    String name = ((JSONObject)laureate).getJSONObject("knownName")
+                                    .getString("en");
+                    laureates.addAll(nobelPrizeApiConnector.getLaureate(name));
+                });
+            });
+
+
+        } catch (URISyntaxException | IOException |InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        return laureates;
     }
 
 }
