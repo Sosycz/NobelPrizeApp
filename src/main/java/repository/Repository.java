@@ -1,16 +1,50 @@
 package repository;
 
-import entity.LaureateEntity;
-import model.PrizeCategory;
 
-public interface Repository {
 
-    public LaureateEntity getByName(String name);
+import javax.persistence.EntityManager;
 
-    public LaureateEntity getByYear(String year);
+public abstract class Repository<T> {
 
-    public LaureateEntity getByYearAndCategory(String year, PrizeCategory category);
+    private final EntityManager entityManager;
+    private final Class<T> typeParameterClass;
 
-    public LaureateEntity save();
-    public void deleteByName();
+    public Repository(EntityManager entityManager, Class<T> typeParameterClass) {
+        this.entityManager = entityManager;
+        this.typeParameterClass = typeParameterClass;
+    }
+
+   public T read(long id) {
+        T result = entityManager.find(typeParameterClass, id);
+        return result;
+   }
+
+   public T create(T t) {
+        entityManager.getTransaction().begin();
+
+        entityManager.persist(t);
+
+        entityManager.getTransaction().commit();
+
+        return t;
+   }
+
+   public T update(T t) {
+        entityManager.getTransaction().begin();
+
+        entityManager.persist(t);
+
+        entityManager.getTransaction().commit();
+
+        return t;
+   }
+
+   public void delete(T t) {
+        entityManager.getTransaction().begin();
+
+        entityManager.remove(t);
+
+        entityManager.getTransaction().commit();
+   }
+
 }

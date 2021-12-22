@@ -2,9 +2,7 @@ package entity;
 
 import model.Prize;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +17,13 @@ public class LaureateEntity {
     private String location;//locationString
     private String dateOfBirth; //birth
     private String dateOfDeath; //death
-    private List<Prize> prizeList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PrizeEntity> prizeList = new ArrayList<>();
+
+    public void setPrizeList(List<PrizeEntity> prizeList) {
+        this.prizeList = prizeList;
+    }
 
     public long getId() {
         return id;
@@ -61,7 +65,7 @@ public class LaureateEntity {
         this.dateOfDeath = dateOfDeath;
     }
 
-    public List<Prize> getPrizeList() {
+    public List<PrizeEntity> getPrizeList() {
         return prizeList;
     }
 

@@ -1,22 +1,27 @@
-package model;
+package entity;
 
+import model.Laureate;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 
-public class Prize {
+@Entity
+@Table(name = "prize")
+public class PrizeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String dateAwarded; //awardYear
     private String category; //category
     private String prizeMotivation;
     private BigDecimal prizeAmountObtained;
     private BigDecimal prizeAmountAdjusted;
-    private Laureate laureate;
 
-    public Laureate getLaureate() {
-        return laureate;
-    }
+//    @ManyToOne( cascade = CascadeType.ALL)
+//    @JoinColumn(name = "LaureateID")
+//    private LaureateEntity laureateEntity;
 
-    public void setLaureate(Laureate laureate) {
-        this.laureate = laureate;
-    }
+
 
     public String getDateAwarded() {
         return dateAwarded;
@@ -58,14 +63,4 @@ public class Prize {
         this.prizeAmountAdjusted = prizeAmountAdjusted;
     }
 
-    @Override
-    public String toString() {
-        return "Prize{" +
-                "dateAwarded='" + dateAwarded + '\'' +
-                ", category='" + category + '\'' +
-                ", prizeMotivation='" + prizeMotivation + '\'' +
-                ", prizeAmountObtained=" + prizeAmountObtained +
-                ", prizeAmountAdjusted=" + prizeAmountAdjusted +
-                '}';
-    }
 }

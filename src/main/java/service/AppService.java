@@ -1,13 +1,15 @@
 package service;
 
-import jdk.jfr.Category;
-import model.Laureate;
-import model.PrizeCategory;
-
-import java.util.List;
+import repository.LaureateRepository;
 
 public interface AppService {
-    public List<Laureate> getLaureatesByName(String name);
-    public List<Laureate> getLaureatesByYear(int year);
-    public List<Laureate> getLaureatesByYearAndCategory(int year, PrizeCategory category);
+
+
+    public int isInDb(int year, String category);
+
+
+    public boolean isInDb(int year);
+
+    public boolean isInDb(String name);
+
 }

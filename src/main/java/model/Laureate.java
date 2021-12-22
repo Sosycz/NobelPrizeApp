@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Laureate {
     private long id;
@@ -10,6 +11,10 @@ public class Laureate {
     private String dateOfBirth; //birth
     private String dateOfDeath; //death
     private List<Prize> prizeList = new ArrayList<>();
+
+    public void setPrizeList(List<Prize> prizeList) {
+        this.prizeList = prizeList;
+    }
 
     public long getId() {
         return id;
@@ -66,5 +71,18 @@ public class Laureate {
                 ", prizeList=" + prizeList +
                 '}';
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Laureate)) return false;
+        Laureate laureate = (Laureate) o;
+        return id == laureate.id && prizeList.equals(laureate.prizeList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, prizeList);
     }
 }
